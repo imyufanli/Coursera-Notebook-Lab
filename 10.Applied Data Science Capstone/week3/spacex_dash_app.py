@@ -92,16 +92,16 @@ def get_pie_chart(entered_site):
      Input(component_id='payload-slider', component_property='value')]
 )
 def get_scatter_chart(entered_site, entered_range):
-    data = spacex_df[spacex_df['Payload Mass (kg)'].between(entered_range[0], entered_range[1])]
+    low, high = entered_range
+    data = spacex_df[spacex_df['Payload Mass (kg)'].between(low, high)]
     if entered_site == 'ALL':
-        data = data[data['Payload Mass (kg)'].between(entered_range[0], entered_range[1])]
         fig = px.scatter(
             data,
             x='Payload Mass (kg)',
             y='class',
             color='Booster Version Category',
             title='Correlation between Payload[{0} - {1}] and Success for all Sites'.
-                format(entered_range[0], entered_range[1])
+                format(low, high)
         )
     else:
         data = data[data['Launch Site'] == entered_site]
@@ -111,7 +111,7 @@ def get_scatter_chart(entered_site, entered_range):
             y='class',
             color='Booster Version Category',
             title='Correlation between Payload[{0} - {1}] and Success for {2}'.
-                format(entered_range[0], entered_range[1], entered_site)
+                format(low, high, entered_site)
         )
     return fig
 
